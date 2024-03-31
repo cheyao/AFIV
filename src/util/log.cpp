@@ -8,13 +8,17 @@
 
 #include "util/log.h"
 
+#include "tinyfiledialogs.h"
+
 std::atomic<LogLevel> log_level(LogLevel::ERROR);
 std::mutex log_mutex;
 std::ofstream log_stream;
-std::ostream *log_ostream = &std::cerr;
+std::ostream* log_ostream = &std::cerr;
 std::string log_filename;
 
-void util::set_log_filename(const char *filename) {
+namespace util {
+
+void set_log_filename(const char* filename) {
     if (log_stream.is_open()) {
         log_stream.close();
         log_ostream = &std::cerr;
@@ -29,11 +33,13 @@ void util::set_log_filename(const char *filename) {
     }
 }
 
-void util::set_log_level(const LogLevel level) { log_level = level; }
+void set_log_level(const LogLevel level) { log_level = level; }
 
-LogLevel util::get_log_level() { return log_level; }
+LogLevel get_log_level() { return log_level; }
 
-static void LOGva(const char *format, va_list ap) {
+} // namespace util
+
+static void LOGva(const LogLevel level, const char* format, va_list ap) {
     va_list apTmp;
     va_copy(apTmp, ap);
     const int size = std::vsnprintf(nullptr, 0, format, apTmp);
@@ -50,28 +56,37 @@ static void LOGva(const char *format, va_list ap) {
         log_ostream->flush();
     }
 
+    if (level == ERROR) {
+        tinyfd_messageBox("Error!", buf.data(), "ok", "error", 1);
+    }
+
+    if (level == FATAL) {
+        tinyfd_messageBox("Fatal error!", buf.data(), "ok", "error", 1);
+        exit(1);
+    }
+
 #ifdef _DEBUG
     fputs(buf.data(), stderr);
     fflush(stderr);
 #endif
 }
 
-void LOG(const char *format, ...) {
+void LOG(const char* format, ...) {
     if (!format || log_level < INFO)
         return;
 
     va_list ap;
     va_start(ap, format);
-    LOGva(format, ap);
+    LOGva(INFO, format, ap);
     va_end(ap);
 }
 
-void LOG(const LogLevel level, const char *format, ...) {
+void LOG(const LogLevel level, const char* format, ...) {
     if (!format || log_level < level)
         return;
 
     va_list ap;
     va_start(ap, format);
-    LOGva(format, ap);
+    LOGva(level, format, ap);
     va_end(ap);
 }

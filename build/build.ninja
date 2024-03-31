@@ -53,7 +53,7 @@ build CMakeFiles/Viewer.dir/src/main.cpp.o: CXX_COMPILER__Viewer_unscanned_Debug
   DEFINES = -D_DEBUG
   DEP_FILE = CMakeFiles/Viewer.dir/src/main.cpp.o.d
   FLAGS = -g -std=c++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.7
-  INCLUDES = -I/Users/ray/Developer/3Dbook/include -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
+  INCLUDES = -I/Users/ray/Developer/3Dbook/extern/tinyfiledialogs -I/Users/ray/Developer/3Dbook/include -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
   OBJECT_DIR = CMakeFiles/Viewer.dir
   OBJECT_FILE_DIR = CMakeFiles/Viewer.dir/src
 
@@ -61,7 +61,7 @@ build CMakeFiles/Viewer.dir/src/ui/window.cpp.o: CXX_COMPILER__Viewer_unscanned_
   DEFINES = -D_DEBUG
   DEP_FILE = CMakeFiles/Viewer.dir/src/ui/window.cpp.o.d
   FLAGS = -g -std=c++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.7
-  INCLUDES = -I/Users/ray/Developer/3Dbook/include -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
+  INCLUDES = -I/Users/ray/Developer/3Dbook/extern/tinyfiledialogs -I/Users/ray/Developer/3Dbook/include -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
   OBJECT_DIR = CMakeFiles/Viewer.dir
   OBJECT_FILE_DIR = CMakeFiles/Viewer.dir/src/ui
 
@@ -69,7 +69,7 @@ build CMakeFiles/Viewer.dir/src/ui/app.cpp.o: CXX_COMPILER__Viewer_unscanned_Deb
   DEFINES = -D_DEBUG
   DEP_FILE = CMakeFiles/Viewer.dir/src/ui/app.cpp.o.d
   FLAGS = -g -std=c++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.7
-  INCLUDES = -I/Users/ray/Developer/3Dbook/include -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
+  INCLUDES = -I/Users/ray/Developer/3Dbook/extern/tinyfiledialogs -I/Users/ray/Developer/3Dbook/include -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
   OBJECT_DIR = CMakeFiles/Viewer.dir
   OBJECT_FILE_DIR = CMakeFiles/Viewer.dir/src/ui
 
@@ -77,9 +77,33 @@ build CMakeFiles/Viewer.dir/src/util/log.cpp.o: CXX_COMPILER__Viewer_unscanned_D
   DEFINES = -D_DEBUG
   DEP_FILE = CMakeFiles/Viewer.dir/src/util/log.cpp.o.d
   FLAGS = -g -std=c++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.7
-  INCLUDES = -I/Users/ray/Developer/3Dbook/include -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
+  INCLUDES = -I/Users/ray/Developer/3Dbook/extern/tinyfiledialogs -I/Users/ray/Developer/3Dbook/include -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
   OBJECT_DIR = CMakeFiles/Viewer.dir
   OBJECT_FILE_DIR = CMakeFiles/Viewer.dir/src/util
+
+build CMakeFiles/Viewer.dir/src/formats/image.cpp.o: CXX_COMPILER__Viewer_unscanned_Debug /Users/ray/Developer/3Dbook/src/formats/image.cpp || cmake_object_order_depends_target_Viewer
+  DEFINES = -D_DEBUG
+  DEP_FILE = CMakeFiles/Viewer.dir/src/formats/image.cpp.o.d
+  FLAGS = -g -std=c++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.7
+  INCLUDES = -I/Users/ray/Developer/3Dbook/extern/tinyfiledialogs -I/Users/ray/Developer/3Dbook/include -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
+  OBJECT_DIR = CMakeFiles/Viewer.dir
+  OBJECT_FILE_DIR = CMakeFiles/Viewer.dir/src/formats
+
+build CMakeFiles/Viewer.dir/src/formats/bmp.cpp.o: CXX_COMPILER__Viewer_unscanned_Debug /Users/ray/Developer/3Dbook/src/formats/bmp.cpp || cmake_object_order_depends_target_Viewer
+  DEFINES = -D_DEBUG
+  DEP_FILE = CMakeFiles/Viewer.dir/src/formats/bmp.cpp.o.d
+  FLAGS = -g -std=c++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.7
+  INCLUDES = -I/Users/ray/Developer/3Dbook/extern/tinyfiledialogs -I/Users/ray/Developer/3Dbook/include -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
+  OBJECT_DIR = CMakeFiles/Viewer.dir
+  OBJECT_FILE_DIR = CMakeFiles/Viewer.dir/src/formats
+
+build CMakeFiles/Viewer.dir/extern/tinyfiledialogs/tinyfiledialogs.cpp.o: CXX_COMPILER__Viewer_unscanned_Debug /Users/ray/Developer/3Dbook/extern/tinyfiledialogs/tinyfiledialogs.cpp || cmake_object_order_depends_target_Viewer
+  DEFINES = -D_DEBUG
+  DEP_FILE = CMakeFiles/Viewer.dir/extern/tinyfiledialogs/tinyfiledialogs.cpp.o.d
+  FLAGS = -g -std=c++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.7
+  INCLUDES = -I/Users/ray/Developer/3Dbook/extern/tinyfiledialogs -I/Users/ray/Developer/3Dbook/include -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
+  OBJECT_DIR = CMakeFiles/Viewer.dir
+  OBJECT_FILE_DIR = CMakeFiles/Viewer.dir/extern/tinyfiledialogs
 
 
 # =============================================================================
@@ -89,7 +113,7 @@ build CMakeFiles/Viewer.dir/src/util/log.cpp.o: CXX_COMPILER__Viewer_unscanned_D
 #############################################
 # Link the executable Viewer
 
-build Viewer: CXX_EXECUTABLE_LINKER__Viewer_Debug CMakeFiles/Viewer.dir/src/main.cpp.o CMakeFiles/Viewer.dir/src/ui/window.cpp.o CMakeFiles/Viewer.dir/src/ui/app.cpp.o CMakeFiles/Viewer.dir/src/util/log.cpp.o | /Library/Frameworks/SDL2.framework/Versions/A/SDL2
+build Viewer: CXX_EXECUTABLE_LINKER__Viewer_Debug CMakeFiles/Viewer.dir/src/main.cpp.o CMakeFiles/Viewer.dir/src/ui/window.cpp.o CMakeFiles/Viewer.dir/src/ui/app.cpp.o CMakeFiles/Viewer.dir/src/util/log.cpp.o CMakeFiles/Viewer.dir/src/formats/image.cpp.o CMakeFiles/Viewer.dir/src/formats/bmp.cpp.o CMakeFiles/Viewer.dir/extern/tinyfiledialogs/tinyfiledialogs.cpp.o | /Library/Frameworks/SDL2.framework/Versions/A/SDL2
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.7
   LINK_LIBRARIES = -Wl,-rpath,/Library/Frameworks  /Library/Frameworks/SDL2.framework/Versions/A/SDL2
   LINK_PATH = -F/Library/Frameworks

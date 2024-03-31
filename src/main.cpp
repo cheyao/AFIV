@@ -1,16 +1,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_shape.h>
 #include <string>
-#include <vector>
 
 #include "ui/app.h"
 #include "ui/window.h"
 #include "util/log.h"
-
-int wWidth = 0;
-int wHeight = 0;
-
-std::vector<ui::Window*> windows{};
 
 int main(int argc, char* argv[]) {
     // Setup log
@@ -27,40 +21,11 @@ int main(int argc, char* argv[]) {
         LOG(ERROR, "Main: Failed to init SDL %s.\n", SDL_GetError());
     }
 
-    windows.push_back(new ui::Window());
-    windows.push_back(new ui::Window());
+    ui::App* mainApp = new ui::App();
 
-    SDL_Event e;
-    while (true) {
-        SDL_WaitEvent(&e);
+    mainApp->startLoop();
 
-        // Quit app
-        if (e.type == SDL_QUIT)
-            break;
-
-        // Something for the window to handle
-        if (e.type == SDL_WINDOWEVENT) {
-            for (int i = 0; i < windows.size(); i++) {
-                if (windows[i]->id() == e.window.windowID) {
-                    if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
-                        delete windows[i];
-                        windows.erase(windows.begin() + i);
-                    } else {
-                        windows[i]->handleWindowEvent(e);
-                    }
-                }
-            }
-        }
-    }
-
-    windows.clear();
-
-    /*
-                    SDL_Event e = {SDL_QUIT};
-                    e.quit.timestamp = SDL_GetTicks();
-                    e.quit.type = SDL_QUIT;
-                    SDL_PushEvent(&e);
-    */
+    delete mainApp;
 
     SDL_Quit();
     return 0;

@@ -1,16 +1,11 @@
 # ninja log v5
-22	2007	1711796866307281560	CMakeFiles/Viewer.dir/src/main.cpp.o	2b4fe581c1eb5f89
-1070	1202	1711798434654380722	Viewer	39c0db130f6acac3
-22	1070	1711798434510519212	CMakeFiles/Viewer.dir/src/ui/window.cpp.o	4c7576bbc3747767
-28	2458	1711795904607992630	CMakeFiles/Viewer.dir/src/ui/app.cpp.o	ac682f24e3aecd50
+15	4865	1711899369830718250	CMakeFiles/Viewer.dir/src/main.cpp.o	7429d6490b78b2db
+1886	1988	1711895159554552870	Viewer	b8e6f7d5b320b1aa
+17	4790	1711899369747163059	CMakeFiles/Viewer.dir/src/ui/window.cpp.o	32312a9c479c35b3
+18	5146	1711899370105990992	CMakeFiles/Viewer.dir/src/ui/app.cpp.o	6defe5572ff60b8c
+6	2975	1711899395242183257	CMakeFiles/Viewer.dir/src/util/log.cpp.o	6e2bdc8fb6ba0d44
 14	1767	1711731409918808063	CMakeFiles/3Dbook.dir/src/main.cpp.o	c867138becb4bf5a
-29	3343	1711795905496410405	CMakeFiles/Viewer.dir/src/util/log.cpp.o	c3f7b0558f6920f
-20	2227	1711811883059955283	CMakeFiles/Viewer.dir/src/main.cpp.o	2b4fe581c1eb5f89
-8	1069	1711811897737291175	CMakeFiles/Viewer.dir/src/ui/window.cpp.o	4c7576bbc3747767
-1069	1363	1711811898094523306	Viewer	39c0db130f6acac3
-20	867	1711812021004019709	CMakeFiles/Viewer.dir/src/ui/window.cpp.o	4c7576bbc3747767
-867	1008	1711812021150178856	Viewer	39c0db130f6acac3
-27	804	1711812068388240778	CMakeFiles/Viewer.dir/src/ui/window.cpp.o	4c7576bbc3747767
-804	916	1711812068505238813	Viewer	39c0db130f6acac3
-11	923	1711812092375174574	CMakeFiles/Viewer.dir/src/ui/window.cpp.o	4c7576bbc3747767
-923	1067	1711812092519674050	Viewer	39c0db130f6acac3
+22	5790	1711899370747629715	CMakeFiles/Viewer.dir/src/formats/bmp.cpp.o	fc6dd8f5732245a8
+21	5754	1711899370713993574	CMakeFiles/Viewer.dir/src/formats/image.cpp.o	c2a0be51a84bdc04
+11	420	1711899470165026110	CMakeFiles/Viewer.dir/extern/tinyfiledialogs/tinyfiledialogs.cpp.o	2f32f9b4fef3b1a3
+420	521	1711899470274537432	Viewer	ee2567db175fa2cb

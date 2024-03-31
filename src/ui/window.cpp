@@ -1,19 +1,21 @@
 #include <SDL2/SDL.h>
 
+#include "formats/bmp.h"
 #include "ui/window.h"
 #include "util/log.h"
 
 namespace ui {
 
-Window::Window()
-    : Window(SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768) {}
+Window::Window(std::string imagePath, int xPos, int yPos, int width, int height)
+    : mWidth{width}, mHeight{height}, mMenuHeight{50}, mViewMenu{0, 0,
+                                                                 mMenuHeight,
+                                                                 width},
+      mViewPreview{0, mMenuHeight, height - mMenuHeight, width} {
 
-Window::Window(int width, int height)
-    : Window(SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height) {}
-
-Window::Window(int xPos, int yPos, int width, int height) {
-    mWidth = width;
-    mHeight = height;
+    mImage = new formats::Image;
+    if (mImage->loadImage(imagePath) != 0) {
+        LOG(ERROR, "Window: Unable to load image %s.\n", imagePath.c_str());
+    }
 
     // Create the window
     mWindow = SDL_CreateWindow("Viewer", SDL_WINDOWPOS_UNDEFINED,
@@ -24,9 +26,22 @@ Window::Window(int xPos, int yPos, int width, int height) {
     } else {
         LOG(VERBOSE, "Window: Succesfully made window.\n");
     }
+
+    // Set minimum window size
+    SDL_SetWindowMinimumSize(mWindow, 300, 60);
+
+    // Create the renderer
+    mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_SOFTWARE);
+    if (mRenderer == NULL) {
+        LOG(ERROR, "Window: Unable to create renderer, %s.\n", SDL_GetError());
+    } else {
+        LOG(VERBOSE, "Window: Succesfully made renderer.\n");
+    }
 }
 
 Window::~Window() {
+    delete mImage;
+    SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     LOG(VERBOSE, "Window: Destroyed window.\n");
 }
@@ -34,12 +49,16 @@ Window::~Window() {
 void Window::handleWindowEvent(const SDL_Event& e) {
     // Type == SDL_WINDOWEVENT
     switch (e.window.event) {
-        case SDL_WINDOWEVENT_SIZE_CHANGED: {
-            mWidth = e.window.data1;
-            mHeight = e.window.data2;
-            LOG(VERBOSE, "Window: Size changed to %ix%i\n", mWidth, mHeight);
-            break;
-        }
+    case SDL_WINDOWEVENT_SIZE_CHANGED: {
+        mWidth = e.window.data1;
+        mHeight = e.window.data2;
+        mViewMenu.w = mWidth;
+        mViewPreview.h = mHeight - mMenuHeight;
+        mViewPreview.w = mWidth;
+
+        LOG(VERBOSE, "Window: Size changed to %ix%i\n", mWidth, mHeight);
+        break;
+    }
     }
 }
 

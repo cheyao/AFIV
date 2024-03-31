@@ -25,13 +25,19 @@ include_directories(${SDL2_INCLUDE_DIRS})
 # find_package(SDL2_image REQUIRED)
 # include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
 
-include_directories(include)
+# tinyfiledialogs
+include_directories(extern/tinyfiledialogs)
 
+# src
+include_directories(include)
 add_executable(Viewer
 src/main.cpp
 src/ui/window.cpp
 src/ui/app.cpp
 src/util/log.cpp
+src/formats/image.cpp
+src/formats/bmp.cpp
+extern/tinyfiledialogs/tinyfiledialogs.cpp
 )
 
 target_link_libraries(Viewer ${SDL2_LIBRARIES})

@@ -3,18 +3,23 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <vector>
+
+#include "ui/window.h"
 
 namespace ui {
 
 class App {
   private:
+    std::vector<ui::Window*> mWindows{};
 
   public:
     App();
-    App(int width, int height);
     ~App();
+
+    void startLoop();
 };
 
-} // namespace app
+} // namespace ui
 
 #endif // APP_H
