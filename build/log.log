@@ -1,6 +1,0 @@
-Main: Starting program.
-Image: Loading file: assets/roundSquare.bmp
-Image: signature : 0x0000000013064d42, 0x0000000000460000
-Image: File is BMP
-BMP: Loading BMP file: assets/roundSquare.bmp
-BMP: Loading image of 6400 size and 32 bits
