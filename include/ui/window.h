@@ -15,20 +15,21 @@ class Window {
     int mMenuHeight;
     // Window
     SDL_Window* mWindow;
-    SDL_Surface* mMask;
-    SDL_Renderer* mRenderer;
+    SDL_Surface* mSurface;
+    // Image
     formats::Image* mImage;
+    SDL_Rect mImageInfo;
     // Viewport rectangles
     SDL_Rect mViewMenu;
     SDL_Rect mViewPreview;
 
   public:
-    Window(std::string imagePath, int xPos = SDL_WINDOWPOS_UNDEFINED, int yPos = SDL_WINDOWPOS_UNDEFINED, int width = 1024, int height = 768);
+    Window(std::string imagePath, int xPos = SDL_WINDOWPOS_UNDEFINED,
+           int yPos = SDL_WINDOWPOS_UNDEFINED, int width = 1024, int height = 768);
 
     void handleWindowEvent(const SDL_Event& e);
 
     Uint32 id() const { return SDL_GetWindowID(mWindow); };
-    SDL_Renderer* renderer() { return mRenderer; };
 
     ~Window();
 };

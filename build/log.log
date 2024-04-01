@@ -1,7 +1,6 @@
 Main: Starting program.
-Image: Loading file: assets/roundSquare.png
-Image: signature : 0x00000000474e5089, 0x000000000d000000
-Window: Unable to load image assets/roundSquare.png.
-Window: Succesfully made window.
-Window: Succesfully made renderer.
-Window: Destroyed window.
+Image: Loading file: assets/roundSquare.bmp
+Image: signature : 0x0000000013064d42, 0x0000000000460000
+Image: File is BMP
+BMP: Loading BMP file: assets/roundSquare.bmp
+BMP: Loading image of 6400 size and 32 bits

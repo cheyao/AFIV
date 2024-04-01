@@ -16,11 +16,16 @@ class Image {
 
   protected:
     SDL_Surface* mSurface;
+    int w, h;
 
   public:
     // return 0 on sucess
+    Image();
+    ~Image();
     int loadImage(std::string s);
     SDL_Surface* getSurface() { return mSurface; };
+    int getWidth() const { return w; };
+    int getHeight() const { return h; };
 };
 
 } // namespace formats

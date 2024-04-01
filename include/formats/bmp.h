@@ -8,10 +8,9 @@ namespace formats {
 
 class BMP {
   private:
-
   public:
     // Return 0 on success
-    int static loadBMP(std::string s, SDL_Surface* surface);
+    int static loadBMP(std::string s, SDL_Surface*& surface);
 };
 
 } // namespace formats

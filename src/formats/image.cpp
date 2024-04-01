@@ -1,11 +1,13 @@
 #include <cstdint>
 #include <fstream>
 
-#include "formats/image.h"
 #include "formats/bmp.h"
+#include "formats/image.h"
 #include "util/log.h"
 
 namespace formats {
+
+Image::Image() : mSurface{nullptr} {}
 
 // Sorts and finds the image processor
 int Image::loadImage(std::string s) {
@@ -30,4 +32,9 @@ int Image::loadImage(std::string s) {
     return 1; // Format not found
 }
 
+Image::~Image() {
+    if (mSurface != nullptr)
+        SDL_FreeSurface(mSurface);
 }
+
+} // namespace formats

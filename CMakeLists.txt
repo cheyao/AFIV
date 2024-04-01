@@ -35,6 +35,7 @@ src/main.cpp
 src/ui/window.cpp
 src/ui/app.cpp
 src/util/log.cpp
+src/formats/general.cpp
 src/formats/image.cpp
 src/formats/bmp.cpp
 extern/tinyfiledialogs/tinyfiledialogs.cpp

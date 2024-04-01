@@ -7,20 +7,20 @@
 namespace ui {
 
 Window::Window(std::string imagePath, int xPos, int yPos, int width, int height)
-    : mWidth{width}, mHeight{height}, mMenuHeight{50}, mViewMenu{0, 0,
-                                                                 mMenuHeight,
-                                                                 width},
-      mViewPreview{0, mMenuHeight, height - mMenuHeight, width} {
+    : mWidth{width}, mHeight{height}, mMenuHeight{50}, mViewMenu{0, 0, width, mMenuHeight},
+      mViewPreview{0, mMenuHeight, width, height - mMenuHeight} {
 
     mImage = new formats::Image;
     if (mImage->loadImage(imagePath) != 0) {
         LOG(ERROR, "Window: Unable to load image %s.\n", imagePath.c_str());
     }
 
+    mImageInfo = {mWidth / 2 - mImage->getWidth() / 2, mHeight / 2 - mImage->getHeight(),
+                  mImage->getWidth(), mImage->getHeight()};
+
     // Create the window
-    mWindow = SDL_CreateWindow("Viewer", SDL_WINDOWPOS_UNDEFINED,
-                               SDL_WINDOWPOS_UNDEFINED, width, height,
-                               SDL_WINDOW_RESIZABLE);
+    mWindow = SDL_CreateWindow("Viewer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width,
+                               height, SDL_WINDOW_RESIZABLE);
     if (mWindow == NULL) {
         LOG(ERROR, "Window: Unable to create window, %s.\n", SDL_GetError());
     } else {
@@ -28,20 +28,21 @@ Window::Window(std::string imagePath, int xPos, int yPos, int width, int height)
     }
 
     // Set minimum window size
-    SDL_SetWindowMinimumSize(mWindow, 300, 60);
+    SDL_SetWindowMinimumSize(mWindow, 500, 200);
 
-    // Create the renderer
-    mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_SOFTWARE);
-    if (mRenderer == NULL) {
-        LOG(ERROR, "Window: Unable to create renderer, %s.\n", SDL_GetError());
-    } else {
-        LOG(VERBOSE, "Window: Succesfully made renderer.\n");
+    // Paint surface
+    mSurface = SDL_GetWindowSurface(mWindow);
+    if (mSurface == NULL) {
+        LOG(ERROR, "Window: Unable to get window surface, %s.\n", SDL_GetError());
     }
+
+    SDL_BlitScaled(mImage->getSurface(), NULL, mSurface, &mViewPreview);
+
+    SDL_UpdateWindowSurface(mWindow);
 }
 
 Window::~Window() {
     delete mImage;
-    SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     LOG(VERBOSE, "Window: Destroyed window.\n");
 }
