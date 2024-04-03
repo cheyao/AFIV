@@ -19,6 +19,7 @@ int main(int argc, char* argv[]) {
     // Init SDL
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         LOG(ERROR, "Main: Failed to init SDL %s.\n", SDL_GetError());
+        return 1;
     }
 
     ui::App* mainApp = new ui::App();

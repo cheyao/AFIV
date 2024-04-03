@@ -41,7 +41,7 @@ int BMP::loadBMP(std::string s, SDL_Surface*& surface) {
 
     if (!file.is_open()) {
         LOG(ERROR, "BMP: Failed to open file %s\n", s.c_str());
-        return 1;
+        throw "BMP: Failed to open file";
     }
 
     BitmapFileHeader* header = new BitmapFileHeader;
@@ -55,7 +55,8 @@ int BMP::loadBMP(std::string s, SDL_Surface*& surface) {
     if (header->signature != 0x4D42) {
         LOG(ERROR, "BMP: Uhhh this isn't supposed to happen! The magic number "
                    "should have been already checked.\n");
-        return 1;
+        throw "BMP: Uhhh this isn't supposed to happen! The magic number "
+                   "should have been already checked.";
     }
 
     size_t fileSize = infoHeader->width * infoHeader->height * (infoHeader->bpp / 8);
@@ -69,6 +70,7 @@ int BMP::loadBMP(std::string s, SDL_Surface*& surface) {
     surface = SDL_CreateRGBSurface(0, infoHeader->width, infoHeader->height, infoHeader->bpp, 0, 0, 0, 0);
     if (surface == NULL) {
         LOG(ERROR, "BMP: Couldn't create surface, %s.\n", SDL_GetError());
+        throw "BMP: Couldn't create surface";
     }
 
     SDL_LockSurface(surface);
@@ -84,6 +86,7 @@ int BMP::loadBMP(std::string s, SDL_Surface*& surface) {
             ((uint32_t*)surface->pixels)[i] = buffer[i];
         } else {
             LOG(ERROR, "BMP: NOT IMPLEMENTED BPP");
+            throw "BMP: NOT IMPLEMENTED BPP";
         }
     }
 

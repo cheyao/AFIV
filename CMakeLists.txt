@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(Viewer CXX)
+project(AFIV CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -30,7 +30,7 @@ include_directories(extern/tinyfiledialogs)
 
 # src
 include_directories(include)
-add_executable(Viewer
+add_executable(AFIV
 src/main.cpp
 src/ui/window.cpp
 src/ui/app.cpp
@@ -41,7 +41,7 @@ src/formats/bmp.cpp
 extern/tinyfiledialogs/tinyfiledialogs.cpp
 )
 
-target_link_libraries(Viewer ${SDL2_LIBRARIES})
+target_link_libraries(AFIV ${SDL2_LIBRARIES})
 
 if(ENABLE_CLANG_TIDY)
     find_program(CLANG_TIDY_EXE

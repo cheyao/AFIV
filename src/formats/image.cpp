@@ -17,6 +17,7 @@ int Image::loadImage(std::string s) {
     std::ifstream file(s, std::ios::in | std::ios::binary);
     if (!file.is_open()) {
         LOG(ERROR, "Image: Failed to open file: %s\n", s.c_str());
+        throw "Image: Failed to open file";
     }
     file.read((char*)&signature1, sizeof(signature1));
     file.read((char*)&signature2, sizeof(signature2));
@@ -29,6 +30,7 @@ int Image::loadImage(std::string s) {
         return formats::BMP::loadBMP(s, mSurface);
     }
 
+    LOG(VERBOSE, "Image: Unable to recognise image.\n");
     return 1; // Format not found
 }
 

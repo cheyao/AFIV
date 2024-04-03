@@ -12,6 +12,7 @@ namespace ui {
 class App {
   private:
     std::vector<ui::Window*> mWindows{};
+    void newWindow();
 
   public:
     App();

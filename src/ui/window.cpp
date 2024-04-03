@@ -13,6 +13,7 @@ Window::Window(std::string imagePath, int xPos, int yPos, int width, int height)
     mImage = new formats::Image;
     if (mImage->loadImage(imagePath) != 0) {
         LOG(ERROR, "Window: Unable to load image %s.\n", imagePath.c_str());
+        throw "Window: Unable to load image.\n";
     }
 
     mImageInfo = {mWidth / 2 - mImage->getWidth() / 2, mHeight / 2 - mImage->getHeight(),
@@ -23,6 +24,7 @@ Window::Window(std::string imagePath, int xPos, int yPos, int width, int height)
                                height, SDL_WINDOW_RESIZABLE);
     if (mWindow == NULL) {
         LOG(ERROR, "Window: Unable to create window, %s.\n", SDL_GetError());
+        throw "Window: Unable to create window.\n";
     } else {
         LOG(VERBOSE, "Window: Succesfully made window.\n");
     }
@@ -34,6 +36,7 @@ Window::Window(std::string imagePath, int xPos, int yPos, int width, int height)
     mSurface = SDL_GetWindowSurface(mWindow);
     if (mSurface == NULL) {
         LOG(ERROR, "Window: Unable to get window surface, %s.\n", SDL_GetError());
+        throw "Window: Unable to get window surface.\n";
     }
 
     SDL_BlitScaled(mImage->getSurface(), NULL, mSurface, &mViewPreview);
