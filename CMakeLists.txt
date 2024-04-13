@@ -12,7 +12,6 @@ if(NOT CMAKE_BUILD_TYPE)
       FORCE)
 endif()
 
-
 if(CMAKE_BUILD_TYPE STREQUAL Debug)
     message("Debug enabled")
     add_definitions(-D_DEBUG)
@@ -59,4 +58,9 @@ if(ENABLE_CLANG_TIDY)
     endif()
 endif()
 
-# do appify for app
+# Set errors
+if(MSVC)
+    target_compile_options(AFIV PRIVATE /W4 /WX)
+else()
+    target_compile_options(AFIV PRIVATE -Wall -Wextra -Wpedantic -Werror)
+endif()

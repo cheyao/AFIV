@@ -10,15 +10,15 @@
 namespace ui {
 
 class App {
-  private:
-    std::vector<ui::Window*> mWindows{};
-    void newWindow();
+      private:
+        std::vector<ui::Window*> mWindows{};
+        void newWindow();
 
-  public:
-    App();
-    ~App();
+      public:
+        App();
+        ~App();
 
-    void startLoop();
+        void startLoop();
 };
 
 } // namespace ui

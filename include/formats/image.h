@@ -12,20 +12,18 @@ namespace formats {
  * Sorts the requests and unifies all to the same surface
  */
 class Image {
-  private:
+      private:
+        SDL_Surface* mSurface;
+        int w, h;
 
-  protected:
-    SDL_Surface* mSurface;
-    int w, h;
-
-  public:
-    // return 0 on sucess
-    Image();
-    ~Image();
-    int loadImage(std::string s);
-    SDL_Surface* getSurface() { return mSurface; };
-    int getWidth() const { return w; };
-    int getHeight() const { return h; };
+      public:
+        // return 0 on sucess
+        Image(std::string s);
+        ~Image();
+        int loadImage(std::string s);
+        SDL_Surface* getSurface() { return mSurface; };
+        int getWidth() const { return w; };
+        int getHeight() const { return h; };
 };
 
 } // namespace formats

@@ -12,6 +12,7 @@ _deps
 .cmake
 build
 # Prerequisites
+.cache
 *.d
 
 # Compiled Object files

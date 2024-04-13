@@ -1,69 +1,110 @@
 #include <SDL2/SDL.h>
 
-#include "formats/bmp.h"
+#include "tinyfiledialogs.h"
 #include "ui/window.h"
 #include "util/log.h"
 
 namespace ui {
 
-Window::Window(std::string imagePath, int xPos, int yPos, int width, int height)
+/*
+ * Window:
+ * Menu
+ * Tabs
+ * Image
+ */
+Window::Window(int width, int height)
     : mWidth{width}, mHeight{height}, mMenuHeight{50}, mViewMenu{0, 0, width, mMenuHeight},
       mViewPreview{0, mMenuHeight, width, height - mMenuHeight} {
+        // Ask for files
+        char* f = tinyfd_openFileDialog("Select images", NULL, 0, NULL, NULL, 1);
+        if (f == NULL) {
+                return;
+        }
+        std::string files = f;
 
-    mImage = new formats::Image;
-    if (mImage->loadImage(imagePath) != 0) {
-        LOG(ERROR, "Window: Unable to load image %s.\n", imagePath.c_str());
-        throw "Window: Unable to load image.\n";
-    }
+        // Split
+        std::vector<std::string> listOfFiles{};
 
-    mImageInfo = {mWidth / 2 - mImage->getWidth() / 2, mHeight / 2 - mImage->getHeight(),
-                  mImage->getWidth(), mImage->getHeight()};
+        size_t pos = 0;
+        std::string token;
+        while ((pos = files.find("|")) != std::string::npos) {
+                token = files.substr(0, pos);
+                listOfFiles.push_back(token);
+                files.erase(0, pos + 1);
+        }
+        listOfFiles.push_back(files);
 
-    // Create the window
-    mWindow = SDL_CreateWindow("Viewer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width,
-                               height, SDL_WINDOW_RESIZABLE);
-    if (mWindow == NULL) {
-        LOG(ERROR, "Window: Unable to create window, %s.\n", SDL_GetError());
-        throw "Window: Unable to create window.\n";
-    } else {
-        LOG(VERBOSE, "Window: Succesfully made window.\n");
-    }
+        // Open the images
+        for (std::string s : listOfFiles) {
+                try {
+                        mImages.push_back(new formats::Image(s));
+                        mTab++;
+                } catch (...) {
+                        continue; // Ha nothing we can do
+                }
+        }
 
-    // Set minimum window size
-    SDL_SetWindowMinimumSize(mWindow, 500, 200);
+        // Create the window
+        mWindow = SDL_CreateWindow("Viewer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                   width, height, SDL_WINDOW_RESIZABLE);
+        if (mWindow == NULL) {
+                LOG(ERROR, "Window: Unable to create window, %s.\n", SDL_GetError());
+                throw "Window: Unable to create window.\n";
+        } else {
+                LOG(VERBOSE, "Window: Succesfully made window.\n");
+        }
 
-    // Paint surface
-    mSurface = SDL_GetWindowSurface(mWindow);
-    if (mSurface == NULL) {
-        LOG(ERROR, "Window: Unable to get window surface, %s.\n", SDL_GetError());
-        throw "Window: Unable to get window surface.\n";
-    }
+        // Set minimum window size
+        SDL_SetWindowMinimumSize(mWindow, 500, 200);
 
-    SDL_BlitScaled(mImage->getSurface(), NULL, mSurface, &mViewPreview);
+        // Paint surface
+        mSurface = SDL_GetWindowSurface(mWindow);
+        if (mSurface == NULL) {
+                LOG(ERROR, "Window: Unable to get window surface, %s.\n", SDL_GetError());
+                throw "Window: Unable to get window surface.\n";
+        }
 
-    SDL_UpdateWindowSurface(mWindow);
+        // Set window icon for windows
+#if defined(_WIN32) && defined(GCL_HICON)
+        setWindowsIcon(mWindow);
+#endif
 }
 
 Window::~Window() {
-    delete mImage;
-    SDL_DestroyWindow(mWindow);
-    LOG(VERBOSE, "Window: Destroyed window.\n");
+        SDL_FreeSurface(mSurface);
+        SDL_DestroyWindow(mWindow);
+        LOG(VERBOSE, "Window: Destroyed window.\n");
 }
 
-void Window::handleWindowEvent(const SDL_Event& e) {
-    // Type == SDL_WINDOWEVENT
-    switch (e.window.event) {
-    case SDL_WINDOWEVENT_SIZE_CHANGED: {
-        mWidth = e.window.data1;
-        mHeight = e.window.data2;
-        mViewMenu.w = mWidth;
-        mViewPreview.h = mHeight - mMenuHeight;
-        mViewPreview.w = mWidth;
+#if defined(_WIN32) && defined(GCL_HICON)
+void Window::setWindowsIcon(SDL_Window* sdlWindow) {
+        HINSTANCE handle = ::GetModuleHandle(nullptr);
+        HICON icon = ::LoadIcon(handle, "AFIV.ico");
+        if (icon != nullptr) {
+                SDL_SysWMinfo wminfo;
+                SDL_VERSION(&wminfo.version);
+                if (SDL_GetWindowWMInfo(sdlWindow, &wminfo) == 1) {
+                        HWND hwnd = wminfo.info.win.window;
+                        ::SetClassLong(hwnd, GCL_HICON, reinterpret_cast<LONG>(icon));
+                }
+        }
+}
+#endif
 
-        LOG(VERBOSE, "Window: Size changed to %ix%i\n", mWidth, mHeight);
-        break;
-    }
-    }
+void Window::handleWindowEvent(const SDL_Event& e) {
+        // Type == SDL_WINDOWEVENT
+        switch (e.window.event) {
+        case SDL_WINDOWEVENT_SIZE_CHANGED: {
+                mWidth = e.window.data1;
+                mHeight = e.window.data2;
+                mViewMenu.w = mWidth;
+                mViewPreview.h = mHeight - mMenuHeight;
+                mViewPreview.w = mWidth;
+
+                LOG(VERBOSE, "Window: Size changed to %ix%i\n", mWidth, mHeight);
+                break;
+        }
+        }
 }
 
 } // namespace ui

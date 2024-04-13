@@ -1,19 +1,19 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_shape.h>
-#include <string>
 
 #include "ui/app.h"
-#include "ui/window.h"
 #include "util/log.h"
 
-int main(int argc, char* argv[]) {
+int main() {
     // Setup log
     util::set_log_filename("log.log");
+
 #ifdef _DEBUG
     util::set_log_level(VERBOSE);
 #else
     util::set_log_level(ERROR);
 #endif
+
     LOG(VERBOSE, "Main: Starting program.\n");
 
     // Init SDL
