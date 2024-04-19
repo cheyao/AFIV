@@ -75,23 +75,7 @@ int BMP::loadBMP(std::string s, SDL_Surface*& surface) {
         }
 
         SDL_LockSurface(surface);
-
-        for (size_t i = 0; i < fileSize / (infoHeader->bpp / 8); i++) {
-                if (infoHeader->bpp == 32) {
-                        // ARGB to RGBA
-                        uint8_t* num = (uint8_t*)&(buffer[i * infoHeader->bpp / 8]);
-                        ((uint32_t*)surface->pixels)[i] =
-                                SDL_MapRGBA(surface->format, num[0], num[1], num[2], num[3]);
-                } else if (infoHeader->bpp == 24) {
-                        uint8_t* num = &((uint8_t*)buffer)[i * infoHeader->bpp / 8];
-                        ((uint32_t*)surface->pixels)[i] =
-                                SDL_MapRGBA(surface->format, num[0], num[1], num[2], 0xFF);
-                        ((uint32_t*)surface->pixels)[i] = buffer[i];
-                } else {
-                        LOG(ERROR, "BMP: NOT IMPLEMENTED BPP");
-                        throw "BMP: NOT IMPLEMENTED BPP";
-                }
-        }
+        // Pixels are accesible
 
         SDL_UnlockSurface(surface);
 

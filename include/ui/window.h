@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "formats/image.h"
+#include "ui/preview.h"
 
 namespace ui {
 
@@ -18,6 +19,7 @@ class Window {
         // Window
         SDL_Window* mWindow;
         SDL_Surface* mSurface;
+        ui::Preview* mPreview;
         // Viewport rectangles
         SDL_Rect mViewMenu;
         SDL_Rect mViewPreview;
@@ -30,6 +32,7 @@ class Window {
 
         void handleWindowEvent(const SDL_Event& e);
         void drawImage(void);
+	void render(void);
 
 #if defined(_WIN32) && defined(GCL_HICON)
         void setWindowsIcon(SDL_Window* sdlWindow);

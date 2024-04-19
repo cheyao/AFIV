@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.9)
 project(AFIV CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -19,6 +19,18 @@ else()
     add_definitions(-DNDEBUG)
 endif()
 
+if(SANITIZE STREQUAL ON)
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address)
+endif()
+
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
+# Check LTO
+include(CheckIPOSupported)
+check_ipo_supported(RESULT LTOSupported OUTPUT error)
+
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 # find_package(SDL2_image REQUIRED)
@@ -33,10 +45,13 @@ add_executable(AFIV
 src/main.cpp
 src/ui/window.cpp
 src/ui/app.cpp
+src/ui/menu.cpp
+src/ui/preview.cpp
 src/util/log.cpp
 src/formats/general.cpp
 src/formats/image.cpp
 src/formats/bmp.cpp
+src/formats/ppm.cpp
 extern/tinyfiledialogs/tinyfiledialogs.cpp
 )
 
@@ -54,13 +69,25 @@ if(ENABLE_CLANG_TIDY)
     endif()
 
     if(CLANG_TIDY_EXE)
-        set_target_properties(aseprite PROPERTIES CXX_CLANG_TIDY "${DO_CLANG_TIDY}")
+	    set_target_properties(AFIV PROPERTIES CXX_CLANG_TIDY "${DO_CLANG_TIDY}")
     endif()
 endif()
 
-# Set errors
+# Set errors if debug
+if(CMAKE_BUILD_TYPE STREQUAL Debug)
 if(MSVC)
     target_compile_options(AFIV PRIVATE /W4 /WX)
 else()
     target_compile_options(AFIV PRIVATE -Wall -Wextra -Wpedantic -Werror)
+endif()
+endif()
+
+# do LTO
+if(LTOSupported)
+if(NOT CMAKE_BUILD_TYPE STREQUAL Debug)
+    message(STATUS "IPO / LTO enabled")
+    set_property(TARGET AFIV PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+endif()
+else()
+    message(STATUS "IPO / LTO not supported: <${error}>")
 endif()

@@ -1,5 +1,6 @@
 #ifndef IMAGE_H
 #define IMAGE_H
+#include <SDL2/SDL_surface.h>
 #pragma once
 
 #include <SDL2/SDL.h>
@@ -13,18 +14,23 @@ namespace formats {
  */
 class Image {
       private:
-        SDL_Surface* mSurface;
         int w, h;
 
       public:
-        // return 0 on sucess
-        Image(std::string s);
-        ~Image();
-        int loadImage(std::string s);
-        SDL_Surface* getSurface() { return mSurface; };
+        // Virtual destructor
+        virtual ~Image() {
+                if (mSurface != nullptr)
+                        SDL_FreeSurface(mSurface);
+        }
+
+        virtual void loadImage(std::ifstream& fileStream) = 0;
         int getWidth() const { return w; };
         int getHeight() const { return h; };
+	
+        SDL_Surface* mSurface;
 };
+
+Image* openImage(std::string path);
 
 } // namespace formats
 

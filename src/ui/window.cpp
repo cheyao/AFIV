@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_render.h>
 
 #include "tinyfiledialogs.h"
 #include "ui/window.h"
@@ -15,6 +16,9 @@ namespace ui {
 Window::Window(int width, int height)
     : mWidth{width}, mHeight{height}, mMenuHeight{50}, mViewMenu{0, 0, width, mMenuHeight},
       mViewPreview{0, mMenuHeight, width, height - mMenuHeight} {
+        // Init preview
+        mPreview = new Preview;
+
         // Ask for files
         char* f = tinyfd_openFileDialog("Select images", NULL, 0, NULL, NULL, 1);
         if (f == NULL) {
@@ -37,8 +41,13 @@ Window::Window(int width, int height)
         // Open the images
         for (std::string s : listOfFiles) {
                 try {
-                        mImages.push_back(new formats::Image(s));
-                        mTab++;
+			formats::Image* tmpImage = formats::openImage(s);
+			if (tmpImage == nullptr) {
+				LOG("Window: openImage for file %s returned nullptr.\n");
+			} else {
+                        	mImages.push_back(tmpImage);
+				mTab++;
+			}
                 } catch (...) {
                         continue; // Ha nothing we can do
                 }
@@ -57,7 +66,7 @@ Window::Window(int width, int height)
         // Set minimum window size
         SDL_SetWindowMinimumSize(mWindow, 500, 200);
 
-        // Paint surface
+        // Get surface
         mSurface = SDL_GetWindowSurface(mWindow);
         if (mSurface == NULL) {
                 LOG(ERROR, "Window: Unable to get window surface, %s.\n", SDL_GetError());
@@ -68,9 +77,16 @@ Window::Window(int width, int height)
 #if defined(_WIN32) && defined(GCL_HICON)
         setWindowsIcon(mWindow);
 #endif
+
+        // Render
+        render();
 }
 
 Window::~Window() {
+	for (auto image : mImages) {
+		delete image;
+	}
+        delete mPreview;
         SDL_FreeSurface(mSurface);
         SDL_DestroyWindow(mWindow);
         LOG(VERBOSE, "Window: Destroyed window.\n");
@@ -91,6 +107,13 @@ void Window::setWindowsIcon(SDL_Window* sdlWindow) {
 }
 #endif
 
+void Window::render(void) {
+        // Draw Preview
+	for (int i = 0; i < mTab; ++i) {
+		mPreview->draw(mSurface, &mViewPreview, mImages[i]);
+	}
+}
+
 void Window::handleWindowEvent(const SDL_Event& e) {
         // Type == SDL_WINDOWEVENT
         switch (e.window.event) {
@@ -105,6 +128,7 @@ void Window::handleWindowEvent(const SDL_Event& e) {
                 break;
         }
         }
+        render();
 }
 
 } // namespace ui
